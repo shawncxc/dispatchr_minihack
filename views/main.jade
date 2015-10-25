@@ -3,15 +3,22 @@ html(lang="en", ng-app="cartApp")
     include ./layout
   body(class="container-fluid", ng-controller="MainCtrl")
     div(class="row", id="header")
-           
+      nav(class="navbar navbar-default navbar-fixed-top")
+        div(class="navbar-header") 
+          img#logo(src="http://www.dispatchr.com/img/logo.png")
+        div(class="navbar navbar-nav navbar-right")
+          h2#appname 
+            b Order & Inventory Manage
+
     div(class="row", id="body")
       div(class="col-xs-3 col-sm-3 col-md-3 col-lg-3") 
         div(class="row")
-          button(class="btn btn-success", data-toggle="modal", data-target="#newCustForm") 
+          button(class="btn btn-success btn-lg btn-block", data-toggle="modal", data-target="#newCustForm") 
             | Add New Customer
         div(class="row")
-          button(class="btn btn-success", data-toggle="modal", data-target="#newOrdForm")
+          button(class="btn btn-success btn-lg btn-block", data-toggle="modal", data-target="#newOrdForm")
             | Add New Order
+        br
         div(class="row")
           div(class="input-group input-group")
             span(class="input-group-addon", id="sizing-addon1") 
@@ -23,8 +30,8 @@ html(lang="en", ng-app="cartApp")
             input#searchItem(ng-model="search.Orders.OrderName", type="text", class="form-control", placeholder="Search By Item Name", aria-describedby="sizing-addon1")
 
       div(class="col-xs-9 col-sm-9 col-md-9 col-lg-9")
-        div(ng-repeat="customer in allRecords | filter:search:strict")
-          | {{customer.CustomerUsername}}
+        div#InfoBox(ng-repeat="customer in allRecords | filter:search:strict")
+          h3 Customer: {{customer.CustomerUsername}}
           button(ng-click="editCustomerData(customer.CustomerUsername)", class="btn btn-warning", ng-hide="showCustomerInfo == customer.CustomerUsername")
             | Edit Customer Data
           div(ng-show="showCustomerInfo == customer.CustomerUsername")
@@ -45,23 +52,41 @@ html(lang="en", ng-app="cartApp")
               | Save
             button(ng-click="updateExCustomerCancel()", class="btn btn-default")
               | Cancel
-
-          div(ng-repeat="order in customer.Orders")
-            | {{order.OrderName}}    
-            input(type="text", ng-show="editTrue == order.Key", ng-model="editOrderName")
-            | {{order.Amount}}    
-            input(type="text", ng-show="editTrue == order.Key", ng-model="editOrderAmount")
-            | {{order.Rate}}    
-            input(type="text", ng-show="editTrue == order.Key", ng-model="editOrderRate")
-            | {{order.Amount * order.Rate}}
-            button(ng-click="updateExOrder(customer.CustomerUsername, editOrderName, editOrderAmount, editOrderRate, order.Key)", class="btn btn-success", ng-show="editTrue == order.Key")
-              | Save
-            button(ng-show="editTrue == order.Key", ng-click="updateExOrderCancel()")
-              | Cancel
-            button(ng-click="editExOrder(order.Key)", class="btn btn-info", ng-hide="editTrue == order.Key")
-              | Edit This Order
-            button(ng-click="deleteExOrder(customer.CustomerUsername, order.Key)", class="btn btn-danger")
-              span(class="glyphicon glyphicon-trash")
+          table(class="table table-hover")
+            thead
+              tr
+                th Order Name
+                th Amount
+                th Single Rate
+                th Total Rate
+            tbody
+              tr(ng-repeat="order in customer.Orders")
+                td(ng-hide="editTrue == order.Key")
+                  {{order.OrderName}}    
+                td(ng-show="editTrue == order.Key") 
+                  input(type="text", ng-model="editOrderName")
+                td(ng-hide="editTrue == order.Key")
+                  {{order.Amount}}    
+                td(ng-show="editTrue == order.Key")
+                  input(type="text", ng-model="editOrderAmount")
+                td(ng-hide="editTrue == order.Key")
+                  {{order.Rate}}    
+                td(ng-show="editTrue == order.Key")
+                  input(type="text", ng-model="editOrderRate")
+                td
+                  {{order.Amount * order.Rate}}
+                td
+                  button(ng-click="updateExOrder(customer.CustomerUsername, editOrderName, editOrderAmount, editOrderRate, order.Key)", class="btn btn-success", ng-show="editTrue == order.Key")
+                    | Save
+                td
+                  button(ng-show="editTrue == order.Key", class="btn btn-default", ng-click="updateExOrderCancel()")
+                    | Cancel
+                td
+                  button(ng-click="editExOrder(order.Key)", class="btn btn-warning", ng-hide="editTrue == order.Key")
+                    | Edit This Order
+                td
+                  button(ng-click="deleteExOrder(customer.CustomerUsername, order.Key)", class="btn btn-danger")
+                    span(class="glyphicon glyphicon-trash")
 
               
         
