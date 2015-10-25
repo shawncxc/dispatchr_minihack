@@ -1,0 +1,134 @@
+html(lang="en", ng-app="cartApp")
+  head
+    include ./layout
+  body(class="container-fluid", ng-controller="MainCtrl")
+    div(class="row", id="header")
+           
+    div(class="row", id="body")
+      div(class="col-xs-3 col-sm-3 col-md-3 col-lg-3") 
+        div(class="row")
+          button(class="btn btn-success", data-toggle="modal", data-target="#newCustForm") 
+            | Add New Customer
+        div(class="row")
+          button(class="btn btn-success", data-toggle="modal", data-target="#newOrdForm")
+            | Add New Order
+        div(class="row")
+          button(class="btn btn-info")
+            | Search And Edit
+      div(class="col-xs-9 col-sm-9 col-md-9 col-lg-9")
+        //- table(class="table table-hover")
+        //-   thead
+        //-     tr
+        //-       th Customer
+        //-       th Orders
+        //-   tbody
+        //-     tr(ng-repeat="customer in allRecords") 
+        //-       td {{customer.CustomerUsername}}
+        //-       td {{customer.Orders}}
+        //-       tr(ng-repeat="order in customer.Orders")
+        //-         td {{order.OrderName}}
+        //-         td {{order.Amount}}
+        div(ng-repeat="customer in allRecords")
+          | {{customer.CustomerUsername}}
+          input(type="text", ng-show="editCustTrue == customer.CustomerUsername")
+          button(ng-click="editCustomerData(customer.CustomerUsername)", class="btn btn-warning")
+            | Edit Customer Data
+          div(ng-show="showCustomerInfo == customer.CustomerUsername")
+            form#editExCustomerInfo(action="/updateExCustomer", method="POST", name="editExCustomerInfo")
+              div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-map-marker")
+                  input#Address(ng-model="CustomerInfo[0].Address", value="{{CustomerInfo[0].Address}}", type="text", name="Address", class="form-control", placeholder="Address", aria-describedby="sizing-addon1")
+              div(class="input-group input-group")
+                span(class="input-group-addon", id="sizing-addon1") 
+                  span(class="glyphicon glyphicon-earphone")
+                input#Phone(ng-model="CustomerInfo[0].Phone", value="{{CustomerInfo[0].Phone}}", type="text", name="Phone", class="form-control", placeholder="Phone Number", aria-describedby="sizing-addon1")
+              div(class="input-group input-group")
+                span(class="input-group-addon", id="sizing-addon1") 
+                  span(class="glyphicon glyphicon-envelope")
+                input#Email(ng-model="CustomerInfo[0].Email", value="{{CustomerInfo[0].Email}}", type="text", name="Email", class="form-control", placeholder="Email", aria-describedby="sizing-addon1")
+            button(ng-click="updateExCustomer(customer.CustomerUsername)", class="btn btn-success")
+              | Save
+
+          div(ng-repeat="order in customer.Orders")
+            | {{order.OrderName}} 
+            input(type="text", ng-show="editTrue == order.Key", ng-model="editOrderName")
+            | {{order.Amount}}
+            input(type="text", ng-show="editTrue == order.Key", ng-model="editOrderAmount")
+            button(ng-click="updateExOrder(customer.CustomerUsername, editOrderName, editOrderAmount, order.Key)", class="btn btn-success", ng-show="editTrue == order.Key")
+              | Save
+            button(ng-click="editExOrder(order.Key)", class="btn btn-info")
+              | Edit This Order
+            button(ng-click="deleteExOrder(customer.CustomerUsername, order.Key)", class="btn btn-danger")
+              span(class="glyphicon glyphicon-trash")
+
+              
+        
+    div(class="row", id="footer")   
+      //- Modal for Adding New Customer and Order
+      div(id="newCustForm", class="modal fade", role="dialog")
+        div(class="modal-dialog")
+          div(class="modal-content")
+            div(class="modal-header")
+              button(type="button", class="close", data-dismiss="modal") &times;
+              h4(class="modal-title") 
+                | New Customer And Orders
+            div(class="modal-body")
+              form#newCustForm(action="/addNewCustomer", method="POST", name="newCustForm")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-user")
+                  input#CustomerUsername(ng-model="CustomerUsername", type="text", name="CustomerUsername", class="form-control", placeholder="Customer Username", aria-describedby="sizing-addon1")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-map-marker")
+                  input#Address(ng-model="Address", type="text", name="Address", class="form-control", placeholder="Address", aria-describedby="sizing-addon1")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-earphone")
+                  input#Phone(ng-model="Phone", type="text", name="Phone", class="form-control", placeholder="Phone Number", aria-describedby="sizing-addon1")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-envelope")
+                  input#Email(ng-model="Email", type="text", name="Email", class="form-control", placeholder="Email", aria-describedby="sizing-addon1")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-shopping-cart")
+                  input#OrderName(ng-model="OrderName", type="text", name="OrderName", class="form-control", placeholder="Order Name", aria-describedby="sizing-addon1")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-scale")
+                  input#Amount(ng-model="Amount", type="number", name="Amount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1")  
+            div(class="modal-footer")
+              button(class="btn btn-success", data-dismiss="modal", ng-click="addNewCustomer()") 
+                | Submit
+              button(class="btn btn-default", data-dismiss="modal") 
+                | Close
+
+      //- Modal for Adding New Order for Existing Customer
+      div(id="newOrdForm", class="modal fade", role="dialog")
+        div(class="modal-dialog")
+          div(class="modal-content")
+            div(class="modal-header")
+              button(type="button", class="close", data-dismiss="modal") &times;
+              h4(class="modal-title") 
+                | Add New Orders for Existing Customer
+            div(class="modal-body")
+              form#newOrdForm(action="/addNewOrder", method="POST", name="newOrdForm")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-user")
+                  input#ExCustomerUsername(ng-model="ExCustomerUsername", type="text", name="ExCustomerUsername", class="form-control", placeholder="Customer Username", aria-describedby="sizing-addon1")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-shopping-cart")
+                  input#ExOrderName(ng-model="ExOrderName", type="text", name="ExOrderName", class="form-control", placeholder="Order Name", aria-describedby="sizing-addon1")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-scale")
+                  input#ExAmount(ng-model="ExAmount", type="number", name="ExAmount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1")  
+            div(class="modal-footer")
+              button(class="btn btn-success", data-dismiss="modal", ng-click="addNewOrder()")
+                | Add This Order
+              button(class="btn btn-default", data-dismiss="modal") 
+                | Close
