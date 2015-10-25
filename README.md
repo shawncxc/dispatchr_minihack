@@ -3,7 +3,7 @@ Dispatchr Mini-Hackthon
 
 Settings:
 1.port is 8080
-2.mongo db name is 'dispatchr'
+<p>2.mongo db name is 'dispatchr'</p>
 3.two collections in db: 'orders' and 'customers'
 
 Mongodb Set Up Steps:
