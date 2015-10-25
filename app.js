@@ -1,3 +1,11 @@
+/*###########################################################################
+
+Xuchang Chen:
+Code has not been refactored into different files, so that you guys can see 
+the code and logic directly without jumping from files to files.
+
+###########################################################################*/
+
 //-------------------------------- modules ---------------------------------
 var express = require('express');
 var bodyParser = require('body-parser');
