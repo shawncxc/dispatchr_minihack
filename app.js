@@ -123,6 +123,7 @@ app.post('/updateExOrder', function(req, res){
 			{$set: 
 				{'Orders.$.OrderName': req.body.OrderName, 
 				'Orders.$.Amount': req.body.Amount, 
+				'Orders.$.Rate': req.body.Rate,
 				'Orders.$.Key': req.body.Key}
 			},
 			function(err, res){

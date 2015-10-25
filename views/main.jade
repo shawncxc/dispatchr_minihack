@@ -47,11 +47,14 @@ html(lang="en", ng-app="cartApp")
               | Cancel
 
           div(ng-repeat="order in customer.Orders")
-            | {{order.OrderName}} 
+            | {{order.OrderName}}    
             input(type="text", ng-show="editTrue == order.Key", ng-model="editOrderName")
-            | {{order.Amount}}
+            | {{order.Amount}}    
             input(type="text", ng-show="editTrue == order.Key", ng-model="editOrderAmount")
-            button(ng-click="updateExOrder(customer.CustomerUsername, editOrderName, editOrderAmount, order.Key)", class="btn btn-success", ng-show="editTrue == order.Key")
+            | {{order.Rate}}    
+            input(type="text", ng-show="editTrue == order.Key", ng-model="editOrderRate")
+            | {{order.Amount * order.Rate}}
+            button(ng-click="updateExOrder(customer.CustomerUsername, editOrderName, editOrderAmount, editOrderRate, order.Key)", class="btn btn-success", ng-show="editTrue == order.Key")
               | Save
             button(ng-show="editTrue == order.Key", ng-click="updateExOrderCancel()")
               | Cancel
@@ -96,7 +99,11 @@ html(lang="en", ng-app="cartApp")
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-scale")
-                  input#Amount(ng-model="Amount", type="number", name="Amount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1")  
+                  input#Amount(ng-model="Amount", type="number", name="Amount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-euro")
+                  input#Rate(ng-model="Rate", type="number", name="Rate", class="form-control", placeholder="Single Rate", aria-describedby="sizing-addon1")  
             div(class="modal-footer")
               button(class="btn btn-success", data-dismiss="modal", ng-click="addNewCustomer()") 
                 | Submit
@@ -124,7 +131,11 @@ html(lang="en", ng-app="cartApp")
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-scale")
-                  input#ExAmount(ng-model="ExAmount", type="number", name="ExAmount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1")  
+                  input#ExAmount(ng-model="ExAmount", type="number", name="ExAmount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1")
+                div(class="input-group input-group")
+                  span(class="input-group-addon", id="sizing-addon1") 
+                    span(class="glyphicon glyphicon-euro")
+                  input#ExRate(ng-model="ExRate", type="number", name="ExRate", class="form-control", placeholder="Single Rate", aria-describedby="sizing-addon1")  
             div(class="modal-footer")
               button(class="btn btn-success", data-dismiss="modal", ng-click="addNewOrder()")
                 | Add This Order

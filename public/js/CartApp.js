@@ -28,7 +28,8 @@ app.controller('MainCtrl', function($scope, $http){
 		var order = {};
 		order.OrderName = $scope.OrderName;
 		order.Amount = $scope.Amount;
-		order.Key = $scope.CustomerUsername + $scope.OrderName + $scope.Amount;
+		order.Rate = $scope.Rate;
+		order.Key = $scope.CustomerUsername + $scope.OrderName + $scope.Amount + $scope.Rate;
 
 		var NewCustomerOrderData = {};
 		NewCustomerOrderData.CustomerUsername = $scope.CustomerUsername;
@@ -74,7 +75,8 @@ app.controller('MainCtrl', function($scope, $http){
 		var order = {};
 		order.OrderName = $scope.ExOrderName;
 		order.Amount = $scope.ExAmount;
-		order.Key = $scope.ExCustomerUsername + $scope.ExOrderName + $scope.ExAmount;
+		order.Rate = $scope.ExRate;
+		order.Key = $scope.ExCustomerUsername + $scope.ExOrderName + $scope.ExAmount + $scope.ExRate;
 
 		var ExCustomerData = {};
 		ExCustomerData.CustomerUsername = $scope.ExCustomerUsername;
@@ -90,12 +92,13 @@ app.controller('MainCtrl', function($scope, $http){
 		$scope.editTrue = Key;
 	};
 
-	$scope.updateExOrder = function(CustomerUsername, editOrderName, editOrderAmount, originKey){
+	$scope.updateExOrder = function(CustomerUsername, editOrderName, editOrderAmount, editOrderRate, originKey){
 		var editExOrderData = {};
 		editExOrderData.CustomerUsername = CustomerUsername;
 		editExOrderData.OrderName = editOrderName;
 		editExOrderData.Amount = editOrderAmount;
-		editExOrderData.Key = CustomerUsername + editOrderName + editOrderAmount;
+		editExOrderData.Rate = editOrderRate;
+		editExOrderData.Key = CustomerUsername + editOrderName + editOrderAmount + editOrderRate;
 		editExOrderData.originKey = originKey;
 		$http.post('/updateExOrder', editExOrderData)
 			.success(function(){
