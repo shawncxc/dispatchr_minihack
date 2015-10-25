@@ -16,9 +16,14 @@ html(lang="en", ng-app="cartApp")
           div(class="input-group input-group")
             span(class="input-group-addon", id="sizing-addon1") 
               span(class="glyphicon glyphicon-search")
-            input#searchCustomer(ng-model="searchCustomer", type="text", class="form-control", placeholder="Search By Customer Name", aria-describedby="sizing-addon1")
+            input#searchCustomer(ng-model="search.CustomerUsername", type="text", class="form-control", placeholder="Search By Customer Name", aria-describedby="sizing-addon1")
+          div(class="input-group input-group")
+            span(class="input-group-addon", id="sizing-addon1") 
+              span(class="glyphicon glyphicon-search")
+            input#searchItem(ng-model="search.Orders.OrderName", type="text", class="form-control", placeholder="Search By Item Name", aria-describedby="sizing-addon1")
+
       div(class="col-xs-9 col-sm-9 col-md-9 col-lg-9")
-        div(ng-repeat="customer in allRecords | searchByCustomer:searchCustomer")
+        div(ng-repeat="customer in allRecords | filter:search:strict")
           | {{customer.CustomerUsername}}
           button(ng-click="editCustomerData(customer.CustomerUsername)", class="btn btn-warning", ng-hide="showCustomerInfo == customer.CustomerUsername")
             | Edit Customer Data
