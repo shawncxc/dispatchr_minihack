@@ -11,7 +11,7 @@ use dispatchr
 db.createCollection('orders')
 db.createCollection('customers')
 
---------------------------------------Thanks-----------------------------------------------
+------------------------------------------------------Thanks---------------------------------------------------------------
 
 Thank you for giving me this chance, really interesting experience.
 And Paulynn is very nice and helpful, thank you, Paulynn.
