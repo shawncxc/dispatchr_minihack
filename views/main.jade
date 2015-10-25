@@ -16,22 +16,9 @@ html(lang="en", ng-app="cartApp")
           button(class="btn btn-info")
             | Search And Edit
       div(class="col-xs-9 col-sm-9 col-md-9 col-lg-9")
-        //- table(class="table table-hover")
-        //-   thead
-        //-     tr
-        //-       th Customer
-        //-       th Orders
-        //-   tbody
-        //-     tr(ng-repeat="customer in allRecords") 
-        //-       td {{customer.CustomerUsername}}
-        //-       td {{customer.Orders}}
-        //-       tr(ng-repeat="order in customer.Orders")
-        //-         td {{order.OrderName}}
-        //-         td {{order.Amount}}
         div(ng-repeat="customer in allRecords")
           | {{customer.CustomerUsername}}
-          input(type="text", ng-show="editCustTrue == customer.CustomerUsername")
-          button(ng-click="editCustomerData(customer.CustomerUsername)", class="btn btn-warning")
+          button(ng-click="editCustomerData(customer.CustomerUsername)", class="btn btn-warning", ng-hide="showCustomerInfo == customer.CustomerUsername")
             | Edit Customer Data
           div(ng-show="showCustomerInfo == customer.CustomerUsername")
             form#editExCustomerInfo(action="/updateExCustomer", method="POST", name="editExCustomerInfo")
@@ -49,6 +36,8 @@ html(lang="en", ng-app="cartApp")
                 input#Email(ng-model="CustomerInfo[0].Email", value="{{CustomerInfo[0].Email}}", type="text", name="Email", class="form-control", placeholder="Email", aria-describedby="sizing-addon1")
             button(ng-click="updateExCustomer(customer.CustomerUsername)", class="btn btn-success")
               | Save
+            button(ng-click="updateExCustomerCancel()", class="btn btn-default")
+              | Cancel
 
           div(ng-repeat="order in customer.Orders")
             | {{order.OrderName}} 
@@ -57,7 +46,9 @@ html(lang="en", ng-app="cartApp")
             input(type="text", ng-show="editTrue == order.Key", ng-model="editOrderAmount")
             button(ng-click="updateExOrder(customer.CustomerUsername, editOrderName, editOrderAmount, order.Key)", class="btn btn-success", ng-show="editTrue == order.Key")
               | Save
-            button(ng-click="editExOrder(order.Key)", class="btn btn-info")
+            button(ng-show="editTrue == order.Key", ng-click="updateExOrderCancel()")
+              | Cancel
+            button(ng-click="editExOrder(order.Key)", class="btn btn-info", ng-hide="editTrue == order.Key")
               | Edit This Order
             button(ng-click="deleteExOrder(customer.CustomerUsername, order.Key)", class="btn btn-danger")
               span(class="glyphicon glyphicon-trash")

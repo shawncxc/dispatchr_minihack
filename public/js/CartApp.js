@@ -3,7 +3,7 @@ var app = angular.module('cartApp', []);
 app.controller('MainCtrl', function($scope, $http){
 	console.log("into the MainCtrl");
 	$scope.allRecords = [];
-	$scope.editTrue = false;
+	$scope.editTrue = "";
 
 	showAll();
 
@@ -64,6 +64,10 @@ app.controller('MainCtrl', function($scope, $http){
 			});
 	};
 
+	$scope.updateExCustomerCancel = function(){
+		$scope.showCustomerInfo = "";
+	};
+
 	//-------------------------------Order Ajax--------------------------------------
 
 	$scope.addNewOrder = function(){
@@ -97,6 +101,10 @@ app.controller('MainCtrl', function($scope, $http){
 			.success(function(){
 				showAll();
 		});
+	};
+
+	$scope.updateExOrderCancel = function(){
+		$scope.editTrue = "";
 	};
 
 	$scope.deleteExOrder = function(CustomerUsername, Key){
