@@ -71,16 +71,27 @@ app.post('/addNewCustomerOrder', function(req, res){
 });
 
 //add new order for existing customer
-app.post('/addNewOrder', function(req, res){
-	client.connect(url, function(err, db){
-		db.collection("orders").update(
-			{CustomerUsername: req.body.CustomerUsername},
-			{$push: {Orders: req.body.NewOrder}},
-			function(err, res){
-				assert.equal(null, err);			
-				db.close();
+app.post('/addNewOrder', 
+	function(req, res, next){
+		client.connect(url, function(err, db){
+			db.collection("orders")
+				.find({CustomerUsername: req.body.CustomerUsername})
+				.toArray(function(err, data){
+					if(data.length === 1) next();
+					else res.send("FAIL");
+			});
 		});
-		res.sendStatus(200);
+	},
+	function(req, res){
+		client.connect(url, function(err, db){
+			db.collection("orders").update(
+				{CustomerUsername: req.body.CustomerUsername},
+				{$push: {Orders: req.body.NewOrder}},
+				function(err, res){
+					assert.equal(null, err);			
+					db.close();
+			});
+			res.sendStatus(200);
 	});
 });
 

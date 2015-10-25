@@ -8,7 +8,7 @@ html(lang="en", ng-app="cartApp")
         div(class="navbar-header") 
           img#logo(src="http://www.dispatchr.com/img/logo.png")
         div(class="navbar navbar-nav navbar-right")
-          h2#appname 
+          h1#appname 
             b Order & Inventory Manage
 
     //---------------------- main body -------------------------------------
@@ -106,37 +106,57 @@ html(lang="en", ng-app="cartApp")
               h4(class="modal-title") 
                 | New Customer And Orders
             div(class="modal-body")
-              form#newCustForm(action="/addNewCustomer", method="POST", name="newCustForm")
+              form#newCustForm(action="/addNewCustomer", method="POST", name="newCustForm" novalidate)
+                
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-user")
-                  input#CustomerUsername(ng-model="CustomerUsername", type="text", name="CustomerUsername", class="form-control", placeholder="Customer Username", aria-describedby="sizing-addon1")
+                  input#CustomerUsername(ng-model="CustomerUsername", type="text", name="CustomerUsername", class="form-control", placeholder="Customer Username", aria-describedby="sizing-addon1" required)
+                span(style="color:red" ng-show="newCustForm.CustomerUsername.$dirty && newCustForm.CustomerUsername.$invalid")
+                  span(ng-show="newCustForm.CustomerUsername.$error.required") Username is required.
+                
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-map-marker")
-                  input#Address(ng-model="Address", type="text", name="Address", class="form-control", placeholder="Address", aria-describedby="sizing-addon1")
+                  input#Address(ng-model="Address", type="text", name="Address", class="form-control", placeholder="Address", aria-describedby="sizing-addon1" required)
+                span(style="color:red" ng-show="newCustForm.Address.$dirty && newCustForm.Address.$invalid")
+                  span(ng-show="newCustForm.Address.$error.required") Address is required.
+                
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-earphone")
-                  input#Phone(ng-model="Phone", type="text", name="Phone", class="form-control", placeholder="Phone Number", aria-describedby="sizing-addon1")
+                  input#Phone(ng-model="Phone", type="number", name="Phone", class="form-control", placeholder="Phone Number", aria-describedby="sizing-addon1" required)
+                span(style="color:red" ng-show="newCustForm.Phone.$dirty && newCustForm.Phone.$invalid")
+                  span(ng-show="newCustForm.Phone.$error.required") Phone is required.
+                  span(ng-show="newCustForm.Phone.$invalid") Phone is invalid.
+                
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-envelope")
-                  input#Email(ng-model="Email", type="text", name="Email", class="form-control", placeholder="Email", aria-describedby="sizing-addon1")
+                  input#Email(ng-model="Email", type="email", name="Email", class="form-control", placeholder="Email", aria-describedby="sizing-addon1" required)
+                span(style="color:red" ng-show="newCustForm.Email.$dirty && newCustForm.Email.$invalid")
+                  span(ng-show="newCustForm.Email.$error.required") Email is required.
+                  span(ng-show="newCustForm.Email.$invalid") Email is invalid.
+                
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-shopping-cart")
                   input#OrderName(ng-model="OrderName", type="text", name="OrderName", class="form-control", placeholder="Order Name", aria-describedby="sizing-addon1")
+                
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-scale")
                   input#Amount(ng-model="Amount", type="number", name="Amount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1")
+                span(ng-show="newCustForm.Amount.$invalid", style="color: red;") Amount is invalid.
+                
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-euro")
-                  input#Rate(ng-model="Rate", type="number", name="Rate", class="form-control", placeholder="Single Rate", aria-describedby="sizing-addon1")  
+                  input#Rate(ng-model="Rate", type="number", name="Rate", class="form-control", placeholder="Single Rate", aria-describedby="sizing-addon1") 
+                span(ng-show="newCustForm.Rate.$invalid", style="color: red;") Rate is invalid.
+
             div(class="modal-footer")
-              button(class="btn btn-success", data-dismiss="modal", ng-click="addNewCustomer()") 
+              button(class="btn btn-success", data-dismiss="modal", ng-click="addNewCustomer()", ng-disabled="newCustForm.$invalid") 
                 | Submit
               button(class="btn btn-default", data-dismiss="modal") 
                 | Close
@@ -150,25 +170,40 @@ html(lang="en", ng-app="cartApp")
               h4(class="modal-title") 
                 | Add New Orders for Existing Customer
             div(class="modal-body")
-              form#newOrdForm(action="/addNewOrder", method="POST", name="newOrdForm")
+              form#newOrdForm(action="/addNewOrder", method="POST", name="newOrdForm" novalidate)
+                
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-user")
-                  input#ExCustomerUsername(ng-model="ExCustomerUsername", type="text", name="ExCustomerUsername", class="form-control", placeholder="Customer Username", aria-describedby="sizing-addon1")
+                  input#ExCustomerUsername(ng-model="ExCustomerUsername", type="text", name="ExCustomerUsername", class="form-control", placeholder="Customer Username", aria-describedby="sizing-addon1" required)
+                span(style="color:red" ng-show="newOrdForm.ExCustomerUsername.$dirty && newOrdForm.ExCustomerUsername.$invalid")
+                  span(ng-show="newOrdForm.ExCustomerUsername.$error.required") Username is required.
+                
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-shopping-cart")
-                  input#ExOrderName(ng-model="ExOrderName", type="text", name="ExOrderName", class="form-control", placeholder="Order Name", aria-describedby="sizing-addon1")
+                  input#ExOrderName(ng-model="ExOrderName", type="text", name="ExOrderName", class="form-control", placeholder="Order Name", aria-describedby="sizing-addon1" required)
+                span(style="color:red" ng-show="newOrdForm.ExOrderName.$dirty && newOrdForm.ExOrderName.$invalid")
+                  span(ng-show="newOrdForm.ExOrderName.$error.required") Order name is required.
+                
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-scale")
-                  input#ExAmount(ng-model="ExAmount", type="number", name="ExAmount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1")
+                  input#ExAmount(ng-model="ExAmount", type="number", name="ExAmount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1" required)
+                span(style="color:red" ng-show="newOrdForm.ExAmount.$dirty && newOrdForm.ExAmount.$invalid")
+                  span(ng-show="newOrdForm.ExAmount.$error.required") Amount is required.
+                  span(ng-show="newOrdForm.ExAmount.$invalid", style="color: red;") Amount is invalid.
+
                 div(class="input-group input-group")
                   span(class="input-group-addon", id="sizing-addon1") 
                     span(class="glyphicon glyphicon-euro")
-                  input#ExRate(ng-model="ExRate", type="number", name="ExRate", class="form-control", placeholder="Single Rate", aria-describedby="sizing-addon1")  
+                  input#ExRate(ng-model="ExRate", type="number", name="ExRate", class="form-control", placeholder="Single Rate", aria-describedby="sizing-addon1" required)  
+                span(style="color:red" ng-show="newOrdForm.ExRate.$dirty && newOrdForm.ExRate.$invalid")
+                  span(ng-show="newOrdForm.ExRate.$error.required") Rate is required.
+                  span(ng-show="newOrdForm.ExRate.$invalid", style="color: red;") Rate is invalid.
+            
             div(class="modal-footer")
-              button(class="btn btn-success", data-dismiss="modal", ng-click="addNewOrder()")
+              button(ng-click="addNewOrder()", class="btn btn-success", data-dismiss="modal", ng-disabled="newOrdForm.$invalid")
                 | Add This Order
               button(class="btn btn-default", data-dismiss="modal") 
                 | Close

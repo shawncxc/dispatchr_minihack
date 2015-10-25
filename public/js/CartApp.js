@@ -4,6 +4,7 @@ app.controller('MainCtrl', function($scope, $http){
 	console.log("into the MainCtrl");
 	$scope.allRecords = [];
 	$scope.editTrue = "";
+	$scope.isExisting = true;
 
 	showAll();
 
@@ -89,8 +90,9 @@ app.controller('MainCtrl', function($scope, $http){
 		ExCustomerData.NewOrder = order;
 
 		$http.post('/AddNewOrder', ExCustomerData)
-			.success(function(){
-				showAll();
+			.success(function(data){
+				if(data == "FAIL") alert("Please enter an existing customer");
+				else showAll();
 			});
 	};
 
