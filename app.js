@@ -1,4 +1,4 @@
-//-------------------------------- server require ---------------------------------
+//-------------------------------- modules ---------------------------------
 var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -6,7 +6,7 @@ var session = require('express-session');
 var path = require('path');
 var morgan = require('morgan');
 
-//-------------------------------- database ---------------------------------
+//-------------------------------- database setting ---------------------------------
 var mongodb = require('mongodb');
 var assert = require('assert');
 var client = mongodb.MongoClient;
@@ -35,6 +35,8 @@ app.get('/', function(req, res){
 	res.render(app.get('views') + '/main.jade');
 });
 
+
+//show all the orders
 app.get('/showAll', function(req, res){
 	client.connect(url, function(err, db){
 		db.collection("orders").find().toArray(function(err, data){
@@ -44,6 +46,7 @@ app.get('/showAll', function(req, res){
 	});
 });
 
+//add new customer's info
 app.post('/addNewCustomer', function(req, res){
 	client.connect(url, function(err, db){
 		db.collection("customers").insertOne(req.body, function(err, res){
@@ -55,6 +58,7 @@ app.post('/addNewCustomer', function(req, res){
 	});
 });
 
+//add new customer's first order
 app.post('/addNewCustomerOrder', function(req, res){
 	client.connect(url, function(err, db){
 		db.collection("orders").insertOne(req.body, function(err, res){
@@ -66,6 +70,7 @@ app.post('/addNewCustomerOrder', function(req, res){
 	});
 });
 
+//add new order for existing customer
 app.post('/addNewOrder', function(req, res){
 	client.connect(url, function(err, db){
 		db.collection("orders").update(
@@ -79,6 +84,7 @@ app.post('/addNewOrder', function(req, res){
 	});
 });
 
+//pull customer info
 app.post('/getCustomerInfo', function(req, res){
 	client.connect(url, function(err, db){
 		db.collection("customers").find(req.body).toArray(function(err, data){
@@ -88,6 +94,8 @@ app.post('/getCustomerInfo', function(req, res){
 	});
 });
 
+
+//update existing customer info
 app.post('/updateExCustomer', function(req, res){
 	var query = {CustomerUsername: req.body.CustomerUsername};
 	client.connect(url, function(err, db){
@@ -99,6 +107,7 @@ app.post('/updateExCustomer', function(req, res){
 	});
 });
 
+//delete existing order
 app.post('/deleteExOrder', function(req, res){
 	console.log(req.body);
 	client.connect(url, function(err, db){
@@ -113,6 +122,7 @@ app.post('/deleteExOrder', function(req, res){
 	});
 });
 
+//update existing order
 app.post('/updateExOrder', function(req, res){
 	client.connect(url, function(err, db){
 		db.collection("orders").update(

@@ -2,6 +2,7 @@ html(lang="en", ng-app="cartApp")
   head
     include ./layout
   body(class="container-fluid", ng-controller="MainCtrl")
+    //---------------------- navbar -------------------------------------
     div(class="row", id="header")
       nav(class="navbar navbar-default navbar-fixed-top")
         div(class="navbar-header") 
@@ -10,7 +11,10 @@ html(lang="en", ng-app="cartApp")
           h2#appname 
             b Order & Inventory Manage
 
+    //---------------------- main body -------------------------------------
     div(class="row", id="body")
+
+      //-----left part of the page, let you add new customers and orders, also search------
       div(class="col-xs-3 col-sm-3 col-md-3 col-lg-3") 
         div(class="row")
           button(class="btn btn-success btn-lg btn-block", data-toggle="modal", data-target="#newCustForm") 
@@ -29,6 +33,7 @@ html(lang="en", ng-app="cartApp")
               span(class="glyphicon glyphicon-search")
             input#searchItem(ng-model="search.Orders.OrderName", type="text", class="form-control", placeholder="Search By Item Name", aria-describedby="sizing-addon1")
 
+      //------------right part of the page, show all the customers and orders----------
       div(class="col-xs-9 col-sm-9 col-md-9 col-lg-9")
         div#InfoBox(ng-repeat="customer in allRecords | filter:search:strict")
           h3 Customer: {{customer.CustomerUsername}}
@@ -89,8 +94,9 @@ html(lang="en", ng-app="cartApp")
                     span(class="glyphicon glyphicon-trash")
 
               
-        
+    //---------------------- footer, all the modals are hidden here ---------------------
     div(class="row", id="footer")   
+      
       //- Modal for Adding New Customer and Order
       div(id="newCustForm", class="modal fade", role="dialog")
         div(class="modal-dialog")

@@ -7,6 +7,7 @@ app.controller('MainCtrl', function($scope, $http){
 
 	showAll();
 
+	//pull and show all the orders and customers
 	function showAll(){
 		$http.get('/showAll')
 			.success(function(data){
@@ -16,6 +17,7 @@ app.controller('MainCtrl', function($scope, $http){
 
 	//-----------------------------------Customer Ajax------------------------------
 
+	//add new customer and their first order
 	$scope.addNewCustomer = function(){
 		var NewCustomerInfo = {};
 		NewCustomerInfo.CustomerUsername = $scope.CustomerUsername;
@@ -42,6 +44,7 @@ app.controller('MainCtrl', function($scope, $http){
 			});
 	};
 
+	//modify customer's info
 	$scope.editCustomerData = function(name){
 		var CustomerUsername = {CustomerUsername: name};
 
@@ -52,6 +55,7 @@ app.controller('MainCtrl', function($scope, $http){
 			});
 	};
 
+	//update and save existing customer's info
 	$scope.updateExCustomer = function(name){
 		var updateData = {};
 		updateData.CustomerUsername = name;
@@ -65,12 +69,14 @@ app.controller('MainCtrl', function($scope, $http){
 			});
 	};
 
+	//cancel updating customer's info
 	$scope.updateExCustomerCancel = function(){
 		$scope.showCustomerInfo = "";
 	};
 
 	//-------------------------------Order Ajax--------------------------------------
 
+	//add new order for existing customers
 	$scope.addNewOrder = function(){
 		var order = {};
 		order.OrderName = $scope.ExOrderName;
@@ -88,10 +94,12 @@ app.controller('MainCtrl', function($scope, $http){
 			});
 	};
 
+	//edit existing order
 	$scope.editExOrder = function(Key){
 		$scope.editTrue = Key;
 	};
 
+	//update and save existing order
 	$scope.updateExOrder = function(CustomerUsername, editOrderName, editOrderAmount, editOrderRate, originKey){
 		var editExOrderData = {};
 		editExOrderData.CustomerUsername = CustomerUsername;
@@ -106,10 +114,12 @@ app.controller('MainCtrl', function($scope, $http){
 		});
 	};
 
+	//cancel updating orders
 	$scope.updateExOrderCancel = function(){
 		$scope.editTrue = "";
 	};
 
+	//delete existing orders
 	$scope.deleteExOrder = function(CustomerUsername, Key){
 		$http.post('/deleteExOrder', {CustomerUsername: CustomerUsername, Key: Key})
 			.success(function(){
