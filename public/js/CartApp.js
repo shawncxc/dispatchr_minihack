@@ -1,4 +1,4 @@
-var app = angular.module('cartApp', []);
+var app = angular.module('cartApp', ['CustomFilter']);
 
 app.controller('MainCtrl', function($scope, $http){
 	console.log("into the MainCtrl");
@@ -114,3 +114,4 @@ app.controller('MainCtrl', function($scope, $http){
 			});
 	};
 });
+
