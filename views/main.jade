@@ -2,208 +2,23 @@ html(lang="en", ng-app="cartApp")
   head
     include ./layout
   body(class="container-fluid", ng-controller="MainCtrl")
-    //---------------------- navbar -------------------------------------
-    div(class="row", id="header")
-      nav(class="navbar navbar-default navbar-fixed-top")
-        div(class="navbar-header") 
-          img#logo(src="http://www.dispatchr.com/img/logo.png")
-        div(class="navbar navbar-nav navbar-right")
-          h1#appname 
-            b Order & Inventory Manage
+    //- navbar 
+    include ./navbar
 
-    //---------------------- main body -------------------------------------
+    //- main body 
     div(class="row", id="body")
-
-      //-----left part of the page, let you add new customers and orders, also search------
-      div(class="col-xs-3 col-sm-3 col-md-3 col-lg-3") 
-        div(class="row")
-          button(class="btn btn-success btn-lg btn-block", data-toggle="modal", data-target="#newCustForm") 
-            | Add New Customer
-        div(class="row")
-          button(class="btn btn-success btn-lg btn-block", data-toggle="modal", data-target="#newOrdForm")
-            | Add New Order
-        br
-        div(class="row")
-          div(class="input-group input-group")
-            span(class="input-group-addon", id="sizing-addon1") 
-              span(class="glyphicon glyphicon-search")
-            input#searchCustomer(ng-model="search.CustomerUsername", type="text", class="form-control", placeholder="Search By Customer Name", aria-describedby="sizing-addon1")
-          div(class="input-group input-group")
-            span(class="input-group-addon", id="sizing-addon1") 
-              span(class="glyphicon glyphicon-search")
-            input#searchItem(ng-model="search.Orders.OrderName", type="text", class="form-control", placeholder="Search By Item Name", aria-describedby="sizing-addon1")
-
-      //------------right part of the page, show all the customers and orders----------
-      div(class="col-xs-9 col-sm-9 col-md-9 col-lg-9")
-        div#InfoBox(ng-repeat="customer in allRecords | filter:search:strict")
-          h3 Customer: {{customer.CustomerUsername}}
-          button(ng-click="editCustomerData(customer.CustomerUsername)", class="btn btn-warning", ng-hide="showCustomerInfo == customer.CustomerUsername")
-            | Edit Customer Data
-          div(ng-show="showCustomerInfo == customer.CustomerUsername")
-            form#editExCustomerInfo(action="/updateExCustomer", method="POST", name="editExCustomerInfo")
-              div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-map-marker")
-                  input#Address(ng-model="CustomerInfo[0].Address", value="{{CustomerInfo[0].Address}}", type="text", name="Address", class="form-control", placeholder="Address", aria-describedby="sizing-addon1")
-              div(class="input-group input-group")
-                span(class="input-group-addon", id="sizing-addon1") 
-                  span(class="glyphicon glyphicon-earphone")
-                input#Phone(ng-model="CustomerInfo[0].Phone", value="{{CustomerInfo[0].Phone}}", type="text", name="Phone", class="form-control", placeholder="Phone Number", aria-describedby="sizing-addon1")
-              div(class="input-group input-group")
-                span(class="input-group-addon", id="sizing-addon1") 
-                  span(class="glyphicon glyphicon-envelope")
-                input#Email(ng-model="CustomerInfo[0].Email", value="{{CustomerInfo[0].Email}}", type="text", name="Email", class="form-control", placeholder="Email", aria-describedby="sizing-addon1")
-            button(ng-click="updateExCustomer(customer.CustomerUsername)", class="btn btn-success")
-              | Save
-            button(ng-click="updateExCustomerCancel()", class="btn btn-default")
-              | Cancel
-          table(class="table table-hover")
-            thead
-              tr
-                th Order Name
-                th Amount
-                th Single Rate
-                th Total Rate
-            tbody
-              tr(ng-repeat="order in customer.Orders")
-                td(ng-hide="editTrue == order.Key")
-                  {{order.OrderName}}    
-                td(ng-show="editTrue == order.Key") 
-                  input(type="text", ng-model="editOrderName")
-                td(ng-hide="editTrue == order.Key")
-                  {{order.Amount}}    
-                td(ng-show="editTrue == order.Key")
-                  input(type="text", ng-model="editOrderAmount")
-                td(ng-hide="editTrue == order.Key")
-                  {{order.Rate}}    
-                td(ng-show="editTrue == order.Key")
-                  input(type="text", ng-model="editOrderRate")
-                td
-                  {{order.Amount * order.Rate}}
-                td
-                  button(ng-click="updateExOrder(customer.CustomerUsername, editOrderName, editOrderAmount, editOrderRate, order.Key)", class="btn btn-success", ng-show="editTrue == order.Key")
-                    | Save
-                td
-                  button(ng-show="editTrue == order.Key", class="btn btn-default", ng-click="updateExOrderCancel()")
-                    | Cancel
-                td
-                  button(ng-click="editExOrder(order.Key)", class="btn btn-warning", ng-hide="editTrue == order.Key")
-                    | Edit This Order
-                td
-                  button(ng-click="deleteExOrder(customer.CustomerUsername, order.Key)", class="btn btn-danger")
-                    span(class="glyphicon glyphicon-trash")
+      //- left part of the page, let you add new customers and orders, also search
+      include ./addAndSearch
+      
+      //- right part of the page, show all the customers and orders
+      include ./inventoryList
 
               
-    //---------------------- footer, all the modals are hidden here ---------------------
+    //- footer, all the modals are hidden here
     div(class="row", id="footer")   
-      
       //- Modal for Adding New Customer and Order
-      div(id="newCustForm", class="modal fade", role="dialog")
-        div(class="modal-dialog")
-          div(class="modal-content")
-            div(class="modal-header")
-              button(type="button", class="close", data-dismiss="modal") &times;
-              h4(class="modal-title") 
-                | New Customer And Orders
-            div(class="modal-body")
-              form#newCustForm(action="/addNewCustomer", method="POST", name="newCustForm" novalidate)
-                
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-user")
-                  input#CustomerUsername(ng-model="CustomerUsername", type="text", name="CustomerUsername", class="form-control", placeholder="Customer Username", aria-describedby="sizing-addon1" required)
-                span(style="color:red" ng-show="newCustForm.CustomerUsername.$dirty && newCustForm.CustomerUsername.$invalid")
-                  span(ng-show="newCustForm.CustomerUsername.$error.required") Username is required.
-                
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-map-marker")
-                  input#Address(ng-model="Address", type="text", name="Address", class="form-control", placeholder="Address", aria-describedby="sizing-addon1" required)
-                span(style="color:red" ng-show="newCustForm.Address.$dirty && newCustForm.Address.$invalid")
-                  span(ng-show="newCustForm.Address.$error.required") Address is required.
-                
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-earphone")
-                  input#Phone(ng-model="Phone", type="number", name="Phone", class="form-control", placeholder="Phone Number", aria-describedby="sizing-addon1" required)
-                span(style="color:red" ng-show="newCustForm.Phone.$dirty && newCustForm.Phone.$invalid")
-                  span(ng-show="newCustForm.Phone.$error.required") Phone is required.
-                  span(ng-show="newCustForm.Phone.$invalid") Phone is invalid.
-                
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-envelope")
-                  input#Email(ng-model="Email", type="email", name="Email", class="form-control", placeholder="Email", aria-describedby="sizing-addon1" required)
-                span(style="color:red" ng-show="newCustForm.Email.$dirty && newCustForm.Email.$invalid")
-                  span(ng-show="newCustForm.Email.$error.required") Email is required.
-                  span(ng-show="newCustForm.Email.$invalid") Email is invalid.
-                
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-shopping-cart")
-                  input#OrderName(ng-model="OrderName", type="text", name="OrderName", class="form-control", placeholder="Order Name", aria-describedby="sizing-addon1")
-                
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-scale")
-                  input#Amount(ng-model="Amount", type="number", name="Amount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1")
-                span(ng-show="newCustForm.Amount.$invalid", style="color: red;") Amount is invalid.
-                
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-euro")
-                  input#Rate(ng-model="Rate", type="number", name="Rate", class="form-control", placeholder="Single Rate", aria-describedby="sizing-addon1") 
-                span(ng-show="newCustForm.Rate.$invalid", style="color: red;") Rate is invalid.
-
-            div(class="modal-footer")
-              button(class="btn btn-success", data-dismiss="modal", ng-click="addNewCustomer()", ng-disabled="newCustForm.$invalid") 
-                | Submit
-              button(class="btn btn-default", data-dismiss="modal") 
-                | Close
+      include ./addNewCustomer
+      
 
       //- Modal for Adding New Order for Existing Customer
-      div(id="newOrdForm", class="modal fade", role="dialog")
-        div(class="modal-dialog")
-          div(class="modal-content")
-            div(class="modal-header")
-              button(type="button", class="close", data-dismiss="modal") &times;
-              h4(class="modal-title") 
-                | Add New Orders for Existing Customer
-            div(class="modal-body")
-              form#newOrdForm(action="/addNewOrder", method="POST", name="newOrdForm" novalidate)
-                
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-user")
-                  input#ExCustomerUsername(ng-model="ExCustomerUsername", type="text", name="ExCustomerUsername", class="form-control", placeholder="Customer Username", aria-describedby="sizing-addon1" required)
-                span(style="color:red" ng-show="newOrdForm.ExCustomerUsername.$dirty && newOrdForm.ExCustomerUsername.$invalid")
-                  span(ng-show="newOrdForm.ExCustomerUsername.$error.required") Username is required.
-                
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-shopping-cart")
-                  input#ExOrderName(ng-model="ExOrderName", type="text", name="ExOrderName", class="form-control", placeholder="Order Name", aria-describedby="sizing-addon1" required)
-                span(style="color:red" ng-show="newOrdForm.ExOrderName.$dirty && newOrdForm.ExOrderName.$invalid")
-                  span(ng-show="newOrdForm.ExOrderName.$error.required") Order name is required.
-                
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-scale")
-                  input#ExAmount(ng-model="ExAmount", type="number", name="ExAmount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1" required)
-                span(style="color:red" ng-show="newOrdForm.ExAmount.$dirty && newOrdForm.ExAmount.$invalid")
-                  span(ng-show="newOrdForm.ExAmount.$error.required") Amount is required.
-                  span(ng-show="newOrdForm.ExAmount.$invalid", style="color: red;") Amount is invalid.
-
-                div(class="input-group input-group")
-                  span(class="input-group-addon", id="sizing-addon1") 
-                    span(class="glyphicon glyphicon-euro")
-                  input#ExRate(ng-model="ExRate", type="number", name="ExRate", class="form-control", placeholder="Single Rate", aria-describedby="sizing-addon1" required)  
-                span(style="color:red" ng-show="newOrdForm.ExRate.$dirty && newOrdForm.ExRate.$invalid")
-                  span(ng-show="newOrdForm.ExRate.$error.required") Rate is required.
-                  span(ng-show="newOrdForm.ExRate.$invalid", style="color: red;") Rate is invalid.
-            
-            div(class="modal-footer")
-              button(ng-click="addNewOrder()", class="btn btn-success", data-dismiss="modal", ng-disabled="newOrdForm.$invalid")
-                | Add This Order
-              button(class="btn btn-default", data-dismiss="modal") 
-                | Close
+      include ./addNewOrder
