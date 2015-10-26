@@ -39,129 +39,20 @@ app.use(express.static(path.join(__dirname, '/public/css')));
 app.use(morgan('combined'));
 
 //-------------------------------- routes ---------------------------------
+var customerRt = require('./routes/customerRt');
+var orderRt = require('./routes/orderRt');
+
 app.get('/', function(req, res){
 	res.render(app.get('views') + '/main.jade');
 });
-
-
-//show all the orders
-app.get('/showAll', function(req, res){
-	client.connect(url, function(err, db){
-		db.collection("orders").find().toArray(function(err, data){
-			res.send(data);
-			db.close();
-		});
-	});
-});
-
-//add new customer's info
-app.post('/addNewCustomer', function(req, res){
-	client.connect(url, function(err, db){
-		db.collection("customers").insertOne(req.body, function(err, res){
-			assert.equal(null, err);	
-			assert.equal(1, res.insertedCount);		
-			db.close();
-		});
-		res.sendStatus(200);
-	});
-});
-
-//add new customer's first order
-app.post('/addNewCustomerOrder', function(req, res){
-	client.connect(url, function(err, db){
-		db.collection("orders").insertOne(req.body, function(err, res){
-			assert.equal(null, err);
-			assert.equal(1, res.insertedCount);
-			db.close();
-		});
-		res.sendStatus(200);
-	});
-});
-
-//add new order for existing customer
-app.post('/addNewOrder', 
-	function(req, res, next){
-		client.connect(url, function(err, db){
-			db.collection("orders")
-				.find({CustomerUsername: req.body.CustomerUsername})
-				.toArray(function(err, data){
-					if(data.length === 1) next();
-					else res.send("FAIL");
-			});
-		});
-	},
-	function(req, res){
-		client.connect(url, function(err, db){
-			db.collection("orders").update(
-				{CustomerUsername: req.body.CustomerUsername},
-				{$push: {Orders: req.body.NewOrder}},
-				function(err, res){
-					assert.equal(null, err);			
-					db.close();
-			});
-			res.sendStatus(200);
-	});
-});
-
-//pull customer info
-app.post('/getCustomerInfo', function(req, res){
-	client.connect(url, function(err, db){
-		db.collection("customers").find(req.body).toArray(function(err, data){
-			res.send(data);
-			db.close();
-		});
-	});
-});
-
-
-//update existing customer info
-app.post('/updateExCustomer', function(req, res){
-	var query = {CustomerUsername: req.body.CustomerUsername};
-	client.connect(url, function(err, db){
-		db.collection("customers").update(query, req.body, function(err, res){
-			assert.equal(null, err);
-			db.close();
-		});
-		res.sendStatus(200);
-	});
-});
-
-//delete existing order
-app.post('/deleteExOrder', function(req, res){
-	console.log(req.body);
-	client.connect(url, function(err, db){
-		db.collection("orders").update(
-			{CustomerUsername: req.body.CustomerUsername}, 
-			{$pull: {Orders: {Key: req.body.Key}}}, 
-			function(err, res){
-				assert.equal(null, err);
-				db.close();
-		});
-		res.sendStatus(200);
-	});
-});
-
-//update existing order
-app.post('/updateExOrder', function(req, res){
-	client.connect(url, function(err, db){
-		db.collection("orders").update(
-			{
-				CustomerUsername: req.body.CustomerUsername, 
-				'Orders.Key': req.body.originKey
-			},
-			{$set: 
-				{'Orders.$.OrderName': req.body.OrderName, 
-				'Orders.$.Amount': req.body.Amount, 
-				'Orders.$.Rate': req.body.Rate,
-				'Orders.$.Key': req.body.Key}
-			},
-			function(err, res){
-				assert.equal(null, err);
-				db.close();
-		});
-		res.sendStatus(200);
-	});
-});
+app.post('/addNewCustomer', customerRt.addNewCustomer); //add new customer's info
+app.post('/getCustomerInfo', customerRt.getCustomerInfo); //pull customer info
+app.post('/updateExCustomer', customerRt.updateExCustomer); //update existing customer info
+app.get('/showAll', orderRt.showAll); //show all the orders
+app.post('/addNewCustomerOrder', orderRt.addNewCustomerOrder); //add new customer's first order
+app.post('/addNewOrder', orderRt.checkExCustomer, orderRt.addNewOrder); //add new order for existing customer
+app.post('/deleteExOrder', orderRt.deleteExOrder); //delete existing order
+app.post('/updateExOrder', orderRt.updateExOrder); //update existing order
 
 //-------------------------------- port ---------------------------------
 app.listen(app.get('port'), function(){
