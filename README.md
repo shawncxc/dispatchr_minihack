@@ -6,7 +6,8 @@
 <p>3.two collections in db: 'orders' and 'customers'</p>
 <p>4.App Server is 'app.js'</p>
 <p>5.MongoLab is used as the remote default mongodb</p>
-<p>6.MongoLab is free, so it is slow</p>
+<p>6.MongoLab is free, so it is slow, local will be better</p>
+<p>7.If you are going to test locally, in the routes-->customerRt.js, orderRt.js, comment url for MongoLab, uncomment url for local test</p>
 
 <h2>Local Set Up Steps</h2>
 <p>1.use dispatchr</p>
