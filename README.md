@@ -1,6 +1,5 @@
-# dispatchr_minihack
-<h1>Dispatchr MiniHackthon</h1>
-
+# Dispatchr MiniHackthon
+<img src="http://www.dispatchr.com/img/logo.png">
 <h2>Settings:</h2>
 <p>1.port is 8080</p>
 <p>2.mongo db name is 'dispatchr'</p>
