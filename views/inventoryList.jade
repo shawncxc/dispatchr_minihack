@@ -2,7 +2,7 @@
 div(class="col-xs-9 col-sm-9 col-md-9 col-lg-9")
   div#InfoBox(ng-repeat="customer in allRecords | filter:search:strict")
     h3 Customer: {{customer.CustomerUsername}}
-    button(ng-click="editCustomerData(customer.CustomerUsername)", class="btn btn-warning", ng-hide="showCustomerInfo == customer.CustomerUsername")
+    button(ng-click="editCustomerData(customer.CustomerUsername)", class="btn btn-warning", ng-hide="showCustomerInfo == customer.CustomerUsername || !auth")
       | Edit Customer Data
     div(ng-show="showCustomerInfo == customer.CustomerUsername")
       form#editExCustomerInfo(action="/updateExCustomer", method="POST", name="editExCustomerInfo")
@@ -64,8 +64,8 @@ div(class="col-xs-9 col-sm-9 col-md-9 col-lg-9")
               button(ng-show="editTrue == order.Key", class="btn btn-default", ng-click="updateExOrderCancel()")
                 | Cancel
             td
-              button(ng-click="editExOrder(order.Key)", class="btn btn-warning", ng-hide="editTrue == order.Key")
+              button(ng-click="editExOrder(order.Key)", class="btn btn-warning", ng-hide="editTrue == order.Key || !auth")
                 | Edit This Order
             td
-              button(ng-click="deleteExOrder(customer.CustomerUsername, order.Key)", class="btn btn-danger")
+              button(ng-click="deleteExOrder(customer.CustomerUsername, order.Key)", class="btn btn-danger", ng-show="auth")
                 span(class="glyphicon glyphicon-trash")

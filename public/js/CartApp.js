@@ -4,7 +4,7 @@ app.controller('MainCtrl', function($scope, $http){
 	console.log("into the MainCtrl");
 	$scope.allRecords = [];
 	$scope.editTrue = "";
-	$scope.isExisting = true;
+	$scope.auth = false;
 
 	showAll();
 
@@ -15,6 +15,10 @@ app.controller('MainCtrl', function($scope, $http){
 				$scope.allRecords = data;
 			});
 	}
+
+	$scope.changeAuth = function(){
+		$scope.auth = true;
+	};
 
 	//-----------------------------------Customer Ajax------------------------------
 

@@ -12,13 +12,15 @@ html(lang="en", ng-app="cartApp")
       
       //- right part of the page, show all the customers and orders
       include ./inventoryList
-
-              
+      
     //- footer, all the modals are hidden here
     div(class="row", id="footer")   
+      //- Modal for login
+      include ./login
+              
       //- Modal for Adding New Customer and Order
       include ./addNewCustomer
-      
 
       //- Modal for Adding New Order for Existing Customer
       include ./addNewOrder
+
