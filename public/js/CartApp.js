@@ -1,11 +1,3 @@
-/*###########################################################################
-
-Xuchang Chen:
-Code has not been refactored into different files, so that you guys can see 
-the code and logic directly without jumping from files to files.
-
-###########################################################################*/
-
 var app = angular.module('cartApp', []);
 
 app.controller('MainCtrl', function($scope, $http){
