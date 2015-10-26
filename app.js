@@ -6,12 +6,6 @@ var session = require('express-session');
 var path = require('path');
 var morgan = require('morgan');
 
-//-------------------------------- database setting ---------------------------------
-var mongodb = require('mongodb');
-var assert = require('assert');
-var client = mongodb.MongoClient;
-var url = 'mongodb://localhost:27017/dispatchr';
-
 //-------------------------------- server setting ---------------------------------
 var app = express();
 app.set('port', 8080);

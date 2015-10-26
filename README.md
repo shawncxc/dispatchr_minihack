@@ -1,18 +1,20 @@
 <img src="http://www.dispatchr.com/img/logo.png"> 
 <h1>MiniHackthon</h1>
-<h2>Settings:</h2>
+<h2>Things You Need to Know</h2>
 <p>1.port is 8080</p>
 <p>2.mongo db name is 'dispatchr'</p>
 <p>3.two collections in db: 'orders' and 'customers'</p>
 <p>4.App Server is 'app.js'</p>
+<p>5.MongoLab is used as the remote default mongodb</p>
+<p>6.MongoLab is free, so it is slow</p>
 
-<h2>Mongodb Set Up Steps:</h2>
+<h2>Local Set Up Steps</h2>
 <p>1.use dispatchr</p>
 <p>2.db.createCollection('orders')</p>
 <p>3.db.createCollection('customers')</p>
 <p>4.node app.js</p>
 
-<h2>Brief Intro:</h2>
+<h2>Framework Usage Brief Intro:</h2>
 <p>Frontend: AngularJS, Bootstrap, JQuery</p>
 <p>Backend: NodeJS, ExpressJS, MongoDB</p>
 
