@@ -16,11 +16,8 @@
 <h2>Brief Intro:</h2>
 <p>Frontend: AngularJS, Bootstrap, JQuery</p>
 <p>Backend: NodeJS, ExpressJS, MongoDB</p>
-<br>
-<br>
-<h2>-----------------------------------------------Thank You-------------------------------------------------</h2>
-<br>
-<br>
+
+<h2>Thank You</h2>
 <p>Thank you Dispatchr for giving me this chance, really interesting experience.
 Thank you Paulynn for always being nice and helpful.</p>
 <p>Next Friday is Halloween, hopefully, I can show you guys my suit. : )</p>
