@@ -3,7 +3,10 @@ div(class="col-xs-9 col-sm-9 col-md-9 col-lg-9")
   div#InfoBox(ng-repeat="customer in allRecords | filter:search:strict")
     h3 Customer: {{customer.CustomerUsername}}
     button(ng-click="editCustomerData(customer.CustomerUsername)", class="btn btn-warning", ng-hide="showCustomerInfo == customer.CustomerUsername || !auth")
-      | Edit Customer Data
+      | Edit Customer Data 
+    &nbsp;&nbsp;
+    button(class="btn btn-success", data-toggle="modal", data-target="#newOrdForm", ng-click="setCustomerUsername(customer.CustomerUsername)")
+      | Add New Order
     div(ng-show="showCustomerInfo == customer.CustomerUsername")
       form#editExCustomerInfo(action="/updateExCustomer", method="POST", name="editExCustomerInfo")
         div(class="input-group input-group")

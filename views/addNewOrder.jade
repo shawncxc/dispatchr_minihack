@@ -11,13 +11,6 @@ div(id="newOrdForm", class="modal fade", role="dialog")
           
           div(class="input-group input-group")
             span(class="input-group-addon", id="sizing-addon1") 
-              span(class="glyphicon glyphicon-user")
-            input#ExCustomerUsername(ng-model="ExCustomerUsername", type="text", name="ExCustomerUsername", class="form-control", placeholder="Customer Username", aria-describedby="sizing-addon1" required)
-          span(style="color:red" ng-show="newOrdForm.ExCustomerUsername.$dirty && newOrdForm.ExCustomerUsername.$invalid")
-            span(ng-show="newOrdForm.ExCustomerUsername.$error.required") Username is required.
-          
-          div(class="input-group input-group")
-            span(class="input-group-addon", id="sizing-addon1") 
               span(class="glyphicon glyphicon-shopping-cart")
             input#ExOrderName(ng-model="ExOrderName", type="text", name="ExOrderName", class="form-control", placeholder="Order Name", aria-describedby="sizing-addon1" required)
           span(style="color:red" ng-show="newOrdForm.ExOrderName.$dirty && newOrdForm.ExOrderName.$invalid")

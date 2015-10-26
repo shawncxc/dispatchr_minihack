@@ -5,6 +5,7 @@ app.controller('MainCtrl', function($scope, $http){
 	$scope.allRecords = [];
 	$scope.editTrue = "";
 	$scope.auth = false;
+	$scope.currentCustomer = "";
 
 	showAll();
 
@@ -16,8 +17,14 @@ app.controller('MainCtrl', function($scope, $http){
 			});
 	}
 
+	//judge whether user is a sales rep or an inventory admin
 	$scope.changeAuth = function(){
 		$scope.auth = true;
+	};
+
+	//get the customer name while adding new order
+	$scope.setCustomerUsername = function(customer){
+		$scope.currentCustomer = customer;
 	};
 
 	//-----------------------------------Customer Ajax------------------------------
@@ -87,10 +94,10 @@ app.controller('MainCtrl', function($scope, $http){
 		order.OrderName = $scope.ExOrderName;
 		order.Amount = $scope.ExAmount;
 		order.Rate = $scope.ExRate;
-		order.Key = $scope.ExCustomerUsername + $scope.ExOrderName + $scope.ExAmount + $scope.ExRate;
+		order.Key = $scope.currentCustomer + $scope.ExOrderName + $scope.ExAmount + $scope.ExRate;
 
 		var ExCustomerData = {};
-		ExCustomerData.CustomerUsername = $scope.ExCustomerUsername;
+		ExCustomerData.CustomerUsername = $scope.currentCustomer;
 		ExCustomerData.NewOrder = order;
 
 		$http.post('/AddNewOrder', ExCustomerData)
