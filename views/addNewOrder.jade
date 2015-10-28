@@ -12,7 +12,9 @@ div(id="newOrdForm", class="modal fade", role="dialog")
           div(class="input-group input-group")
             span(class="input-group-addon", id="sizing-addon1") 
               span(class="glyphicon glyphicon-shopping-cart")
-            input#ExOrderName(ng-model="ExOrderName", type="text", name="ExOrderName", class="form-control", placeholder="Order Name", aria-describedby="sizing-addon1" required)
+            select#ExOrderName(ng-model="ExOrderName", ng-options="(item.inventoryName + '  $' + item.inventoryRate) for item in inventory track by item.inventoryRate", name="OrderName", class="form-control", aria-describedby="sizing-addon1")
+              option(value="") ----Choose Item----
+
           span(style="color:red" ng-show="newOrdForm.ExOrderName.$dirty && newOrdForm.ExOrderName.$invalid")
             span(ng-show="newOrdForm.ExOrderName.$error.required") Order name is required.
           
@@ -23,14 +25,6 @@ div(id="newOrdForm", class="modal fade", role="dialog")
           span(style="color:red" ng-show="newOrdForm.ExAmount.$dirty && newOrdForm.ExAmount.$invalid")
             span(ng-show="newOrdForm.ExAmount.$error.required") Amount is required.
             span(ng-show="newOrdForm.ExAmount.$invalid", style="color: red;") Amount is invalid.
-
-          div(class="input-group input-group")
-            span(class="input-group-addon", id="sizing-addon1") 
-              span(class="glyphicon glyphicon-euro")
-            input#ExRate(ng-model="ExRate", type="number", name="ExRate", class="form-control", placeholder="Single Rate", aria-describedby="sizing-addon1" required)  
-          span(style="color:red" ng-show="newOrdForm.ExRate.$dirty && newOrdForm.ExRate.$invalid")
-            span(ng-show="newOrdForm.ExRate.$error.required") Rate is required.
-            span(ng-show="newOrdForm.ExRate.$invalid", style="color: red;") Rate is invalid.
       
       div(class="modal-footer")
         button(ng-click="addNewOrder()", class="btn btn-success", data-dismiss="modal", ng-disabled="newOrdForm.$invalid")

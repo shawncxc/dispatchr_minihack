@@ -6,8 +6,21 @@ app.controller('MainCtrl', function($scope, $http){
 	$scope.editTrue = "";
 	$scope.auth = false;
 	$scope.currentCustomer = "";
+	$scope.showOrd = true;
+	$scope.showInv = false;
 
 	showAll();
+	showAllInv();
+
+	//toggle the order list and inventory list
+	$scope.showOrder = function(){
+		$scope.showOrd = true;
+		$scope.showInv = false;
+	};
+	$scope.showInven = function(){
+		$scope.showOrd = false;
+		$scope.showInv = true;
+	};
 
 	//pull and show all the orders and customers
 	function showAll(){
@@ -37,13 +50,13 @@ app.controller('MainCtrl', function($scope, $http){
 		NewCustomerInfo.Phone = $scope.Phone;
 		NewCustomerInfo.Email = $scope.Email;
 
-		$http.post('/addNewCustomer', NewCustomerInfo);
+		//$http.post('/addNewCustomer', NewCustomerInfo);
 
 		var order = {};
-		order.OrderName = $scope.OrderName;
+		order.OrderName = $scope.OrderName.inventoryName;
 		order.Amount = $scope.Amount;
-		order.Rate = $scope.Rate;
-		order.Key = $scope.CustomerUsername + $scope.OrderName + $scope.Amount + $scope.Rate;
+		order.Rate = parseInt($scope.OrderName.inventoryRate);
+		order.Key = $scope.CustomerUsername + $scope.OrderName.inventoryName + $scope.Amount + $scope.OrderName.inventoryRate;
 
 		var NewCustomerOrderData = {};
 		NewCustomerOrderData.CustomerUsername = $scope.CustomerUsername;
@@ -91,9 +104,9 @@ app.controller('MainCtrl', function($scope, $http){
 	//add new order for existing customers
 	$scope.addNewOrder = function(){
 		var order = {};
-		order.OrderName = $scope.ExOrderName;
+		order.OrderName = $scope.ExOrderName.inventoryName;
 		order.Amount = $scope.ExAmount;
-		order.Rate = $scope.ExRate;
+		order.Rate = parseInt($scope.ExOrderName.inventoryRate);
 		order.Key = $scope.currentCustomer + $scope.ExOrderName + $scope.ExAmount + $scope.ExRate;
 
 		var ExCustomerData = {};
@@ -139,6 +152,24 @@ app.controller('MainCtrl', function($scope, $http){
 				showAll();
 			});
 	};
+
+	//-------------------------------Inventory Ajax--------------------------------------
+	$scope.addInventory = function(invName, invRate){
+		var JSONdata = {inventoryName: invName, inventoryRate: invRate};
+		$http.put('/addInventory', JSONdata)
+			.success(function(){
+				console.log("add inventory successful");
+				showAllInv();
+			});
+	};
+
+	function showAllInv(){
+		$http.get('/showInventory')
+			.success(function(inventory){
+				$scope.inventory = inventory;
+			});
+	}
+
 });
 
 

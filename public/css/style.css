@@ -7,7 +7,7 @@ html, body{
 	width: 100%;
 }
 
-#body{
+#orderManage, #invenManage{
 	height: 80%;
 	width: 100%;
 }
@@ -27,4 +27,13 @@ html, body{
 	margin-top: 15px;
 	margin-bottom: 15px;
 	margin-right: 30px;
+}
+
+nav div button{
+	margin-top: 15px;
+	margin-left: 20px;
+}
+
+#addInvenBtn{
+	margin-left: 0px;
 }

@@ -1,8 +1,8 @@
 var mongodb = require('mongodb');
 var assert = require('assert');
 var client = mongodb.MongoClient;
-//var url = 'mongodb://localhost:27017/dispatchr'; //for local test
-var url = 'mongodb://xuchang:xuchangchen@ds045714.mongolab.com:45714/dispatchr'; //mongolab
+var url = 'mongodb://localhost:27017/dispatchr'; //for local test
+//var url = 'mongodb://xuchang:xuchangchen@ds045714.mongolab.com:45714/dispatchr'; //mongolab
 
 //show all the orders
 module.exports.showAll = function(req, res){

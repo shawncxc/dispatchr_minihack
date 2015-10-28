@@ -42,19 +42,14 @@ div(id="newCustForm", class="modal fade", role="dialog")
           div(class="input-group input-group")
             span(class="input-group-addon", id="sizing-addon1") 
               span(class="glyphicon glyphicon-shopping-cart")
-            input#OrderName(ng-model="OrderName", type="text", name="OrderName", class="form-control", placeholder="Order Name", aria-describedby="sizing-addon1")
-          
+            select#OrderName(ng-model="OrderName", ng-options="(item.inventoryName + '  $' + item.inventoryRate) for item in inventory track by item.inventoryRate", name="OrderName", class="form-control", aria-describedby="sizing-addon1")
+              option(value="") ----Choose Item----
+
           div(class="input-group input-group")
             span(class="input-group-addon", id="sizing-addon1") 
               span(class="glyphicon glyphicon-scale")
             input#Amount(ng-model="Amount", type="number", name="Amount", class="form-control", placeholder="Amount", aria-describedby="sizing-addon1")
           span(ng-show="newCustForm.Amount.$invalid", style="color: red;") Amount is invalid.
-          
-          div(class="input-group input-group")
-            span(class="input-group-addon", id="sizing-addon1") 
-              span(class="glyphicon glyphicon-euro")
-            input#Rate(ng-model="Rate", type="number", name="Rate", class="form-control", placeholder="Single Rate", aria-describedby="sizing-addon1") 
-          span(ng-show="newCustForm.Rate.$invalid", style="color: red;") Rate is invalid.
 
       div(class="modal-footer")
         button(class="btn btn-success", data-dismiss="modal", ng-click="addNewCustomer()", ng-disabled="newCustForm.$invalid") 
