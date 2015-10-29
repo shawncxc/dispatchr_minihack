@@ -70,6 +70,10 @@ app.get('/showInventory', function(req, res){
 //-------------------------------- customer routes ---------------------------------
 
 app.get('/', function(req, res){
+	res.render(app.get('views') + '/AdminOrCust.jade');
+});
+
+app.get('/customer', function(req, res){
 	res.render(app.get('views') + '/customerMain.jade');
 });
 

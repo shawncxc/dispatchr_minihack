@@ -50,7 +50,7 @@ app.controller('MainCtrl', function($scope, $http){
 		NewCustomerInfo.Phone = $scope.Phone;
 		NewCustomerInfo.Email = $scope.Email;
 
-		//$http.post('/addNewCustomer', NewCustomerInfo);
+		$http.post('/addNewCustomer', NewCustomerInfo);
 
 		var order = {};
 		order.OrderName = $scope.OrderName.inventoryName;
