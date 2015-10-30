@@ -6,7 +6,7 @@ var session = require('express-session');
 var path = require('path');
 var morgan = require('morgan');
 var md5 = require('js-md5');
-
+console.log("hello world");
 //-------------------------------- server setting ---------------------------------
 var app = express();
 app.set('port', 8080);
