@@ -15,6 +15,13 @@ div(id="newCustForm", class="modal fade", role="dialog")
             input#CustomerUsername(ng-model="CustomerUsername", type="text", name="CustomerUsername", class="form-control", placeholder="Customer Username", aria-describedby="sizing-addon1" required)
           span(style="color:red" ng-show="newCustForm.CustomerUsername.$dirty && newCustForm.CustomerUsername.$invalid")
             span(ng-show="newCustForm.CustomerUsername.$error.required") Username is required.
+
+          div(class="input-group input-group")
+            span(class="input-group-addon", id="sizing-addon1") 
+              span(class="glyphicon glyphicon-qrcode")
+            input#pwd(ng-model="pwd", type="password", name="pwd", class="form-control", placeholder="Customer Password", aria-describedby="sizing-addon1" required)
+          span(style="color:red" ng-show="newCustForm.pwd.$dirty && newCustForm.pwd.$invalid")
+            span(ng-show="newCustForm.pwd.$error.required") Password is required.
           
           div(class="input-group input-group")
             span(class="input-group-addon", id="sizing-addon1") 

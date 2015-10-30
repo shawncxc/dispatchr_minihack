@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var path = require('path');
 var morgan = require('morgan');
+var md5 = require('js-md5');
 
 //-------------------------------- server setting ---------------------------------
 var app = express();
@@ -28,8 +29,8 @@ app.use(morgan('combined'));
 var mongodb = require('mongodb');
 var assert = require('assert');
 var client = mongodb.MongoClient;
-//var url = 'mongodb://localhost:27017/dispatchr'; //for local test
-var url = 'mongodb://xuchang:xuchangchen@ds045714.mongolab.com:45714/dispatchr'; //mongolab
+var url = 'mongodb://localhost:27017/dispatchr'; //for local test
+//var url = 'mongodb://xuchang:xuchangchen@ds045714.mongolab.com:45714/dispatchr'; //mongolab
 
 var customerRt = require('./routes/customerRt');
 var orderRt = require('./routes/orderRt');
@@ -79,12 +80,13 @@ app.get('/customer', function(req, res){
 
 app.post('/custLogin', function(req, res){
 	client.connect(url, function(err, db){
-		db.collection('customers').find({CustomerUsername: req.body.CustomerUsername})
+		db.collection('customers').find(req.body)
 			.toArray(function(err, data){
 				assert.equal(err, null);
 				if(data.length === 1){
 					req.session.username = data[0].CustomerUsername;
-					res.send(data[0]);
+					req.session.usericon = md5(req.session.username);
+					res.send({data: data[0], usericon: req.session.usericon});
 					db.close();
 				}
 				else{

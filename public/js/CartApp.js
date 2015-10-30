@@ -42,10 +42,16 @@ app.controller('MainCtrl', function($scope, $http){
 
 	//-----------------------------------Customer Ajax------------------------------
 
+	//show or hide order list
+	$scope.hasOrders = function(index){
+		return $scope.allRecords[index].Orders.length === 0;
+	};
+
 	//add new customer and their first order
 	$scope.addNewCustomer = function(){
 		var NewCustomerInfo = {};
 		NewCustomerInfo.CustomerUsername = $scope.CustomerUsername;
+		NewCustomerInfo.Password = $scope.pwd;
 		NewCustomerInfo.Address = $scope.Address;
 		NewCustomerInfo.Phone = $scope.Phone;
 		NewCustomerInfo.Email = $scope.Email;

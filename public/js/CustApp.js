@@ -1,6 +1,6 @@
-var custApp = angular.module('custApp', []);
+var custApp = angular.module('custApp', ['ngCookies']);
 
-custApp.controller('custCtrl', function($scope, $http){
+custApp.controller('custCtrl', function($scope, $http, $cookieStore){
 	console.log("into the custCtrl");
 
 	custShowAllInv();
@@ -19,31 +19,52 @@ custApp.controller('custCtrl', function($scope, $http){
 		$scope.showInvTab = true;
 	}
 	
-	//-------------------------------login and sign up part------------------------
+	//-------------------------------login, sign up and sign out part-------------------
 	//detect if is a guest login
-	$scope.isGuest = true;
+	$scope.isGuest = isGuestDetect();
+	$scope.modalOrNot = removeModal();
+
+	//after refresh, retrieve data if is not guest
+	if(!isGuestDetect()){
+		custShowAll($cookieStore.get("USERNAME"));
+		custShowInfo($cookieStore.get("USERNAME"));
+	}
 
 	//ajax for login
-	$scope.custLogin = function(username){
-		var loginJsonData = {CustomerUsername: username};
+	$scope.custLogin = function(username, pwd){
+		var loginJsonData = {
+			CustomerUsername: username,
+			Password: pwd
+		};
 		$http.post('/custLogin', loginJsonData)
 			.success(function(res){
 				if(res != "FAIL"){
-					$scope.isGuest = false;
-					$scope.CustomerUsername = res.CustomerUsername;
-					$scope.Address = res.Address;
-					$scope.Phone = res.Phone;
-					$scope.Email = res.Email;
+					$scope.CustomerUsername = res.data.CustomerUsername;
+					$scope.Address = res.data.Address;
+					$scope.Phone = res.data.Phone;
+					$scope.Email = res.data.Email;
+					$scope.usericon = res.usericon;
 
-					custShowAll($scope.CustomerUsername);
+					$cookieStore.put('USERNAME', res.data.CustomerUsername);
+					$scope.isGuest = isGuestDetect();
+
+					custShowAll(res.data.CustomerUsername);
+
+					if($scope.usericon != undefined){
+						location.reload();
+					}
+				}
+				else{
+					alert("Password or Username is wrong, login as guest");
 				}
 		});
 	};
 
 	//ajax for sigup
-	$scope.custSignup = function(custSignUser, custSignAddrs, custSignPhone, custSignEml){
+	$scope.custSignup = function(custSignUser, custPwd, custSignAddrs, custSignPhone, custSignEml){
 		var NewCustomerInfo = {};
 		NewCustomerInfo.CustomerUsername = custSignUser;
+		NewCustomerInfo.Password = custPwd;
 		NewCustomerInfo.Address = custSignAddrs;
 		NewCustomerInfo.Phone = custSignPhone;
 		NewCustomerInfo.Email = custSignEml;
@@ -56,43 +77,60 @@ custApp.controller('custCtrl', function($scope, $http){
 
 		$http.post('/addNewCustomerOrder', NewCustomerOrderData)
 			.success(function(){
+				custShowInfo(custSignUser)
 				$http.post('/custLogin', {CustomerUsername: custSignUser})
 					.success(function(res){
 						if(res != "FAIL"){
-							$scope.isGuest = false;
-							$scope.CustomerUsername = res.CustomerUsername;
-							$scope.Address = res.Address;
-							$scope.Phone = res.Phone;
-							$scope.Email = res.Email;
+							$scope.CustomerUsername = res.data.CustomerUsername;
+							$scope.Address = res.data.Address;
+							$scope.Phone = res.data.Phone;
+							$scope.Email = res.data.Email;
+							$scope.usericon = res.usericon;
 
-							custShowAll($scope.CustomerUsername);
+						    $cookieStore.put('USERNAME', res.data.CustomerUsername);
+						    $scope.isGuest = isGuestDetect();
+
+						    if($scope.usericon != undefined){
+								location.reload();
+							}
+
+							custShowAll(res.data.CustomerUsername);
 						}
 				});
 			});
 	};
 
+	$scope.signout = function(){
+		$cookieStore.remove("USERNAME");
+		location.reload();
+	};
+
 	//------------------------------customer buy new product-----------------------
 
 	$scope.custAddNewOrder = function(product, amount, rate, CustomerUsername){
-		var order = {};
-		order.OrderName = product;
-		order.Amount = amount;
-		order.Rate = parseInt(rate);
-		order.Key = CustomerUsername + product + amount + rate;
+		if(amount != "" && amount != undefined){
+			var order = {};
+			order.OrderName = product;
+			order.Amount = amount;
+			order.Rate = parseInt(rate);
+			order.Key = CustomerUsername + product + amount + rate;
 
-		var ExCustomerData = {};
-		ExCustomerData.CustomerUsername = CustomerUsername;
-		ExCustomerData.NewOrder = order;
+			var ExCustomerData = {};
+			ExCustomerData.CustomerUsername = CustomerUsername;
+			ExCustomerData.NewOrder = order;
 
-		$http.post('/AddNewOrder', ExCustomerData)
-			.success(function(data){
-				if(data == "FAIL") alert("Please enter an existing customer");
-				else{
-					//clear amount input
-					//$scope.custBuyAmount = "";
-					custShowAll(CustomerUsername);
-				} 
-			});
+			$http.post('/AddNewOrder', ExCustomerData)
+				.success(function(data){
+					if(data == "FAIL") alert("Please enter an existing customer");
+					else{
+						custShowAll(CustomerUsername);
+					} 
+				});
+		}
+		else{
+			alert("The Amount can not be blank");
+		}
+		
 	};
 
 	//------------------------------initialization function-------------------------
@@ -107,8 +145,32 @@ custApp.controller('custCtrl', function($scope, $http){
 	function custShowAllInv(){
 		$http.get('/showInventory')
 			.success(function(inventory){
-				console.log(inventory);
 				$scope.inventory = inventory;
 			});
+	}
+
+	function isGuestDetect(){
+		if($cookieStore.get('USERNAME') == "" || $cookieStore.get('USERNAME') == undefined){
+			return true;
+		}
+		else return false;
+	}
+
+	function removeModal(){
+		if($scope.isGuest) return "modal";
+		else return "Nonmodal";
+	};
+
+	function custShowInfo(username){
+		$http.post('/custLogin', {CustomerUsername: username})
+			.success(function(res){
+				if(res != "FAIL"){
+					$scope.CustomerUsername = res.data.CustomerUsername;
+					$scope.Address = res.data.Address;
+					$scope.Phone = res.data.Phone;
+					$scope.Email = res.data.Email;
+					$scope.usericon = res.usericon;
+				}
+		});
 	}
 });

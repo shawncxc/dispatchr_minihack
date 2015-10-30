@@ -16,3 +16,10 @@ html, body{
 #btnPart > input{
 	width: 50%;
 }
+
+#signout{
+	margin-top: 20px;
+	margin-right: 30px;
+}
+
+
