@@ -27,7 +27,11 @@ html(lang="en", ng-app="cartApp")
           span(class="input-group-addon", id="sizing-addon1") 
             span(class="glyphicon glyphicon-euro")
           input#invRate(ng-model="invRate", type="text", class="form-control", placeholder="Enter Single Rate", aria-describedby="sizing-addon1")
-        button#addInvenBtn(class="btn btn-success btn-lg btn-block", ng-click="addInventory(invName, invRate)") Add New Inventory
+        div(class="input-group input-group")
+          span(class="input-group-addon", id="sizing-addon1") 
+            span(class="glyphicon glyphicon-shopping-cart")
+          input#invAmount(ng-model="invAmount", type="text", class="form-control", placeholder="Enter Amount", aria-describedby="sizing-addon1")
+        button#addInvenBtn(class="btn btn-success btn-lg btn-block", ng-click="addInventory(invName, invRate, invAmount)") Add New Inventory
 
       div(class="col-xs-9 col-sm-9 col-md-9 col-lg-9")
         table(class="table table-hover")
@@ -35,10 +39,12 @@ html(lang="en", ng-app="cartApp")
             tr
               th Item Name
               th Item Rate
+              th Item Amount
           tbody
             tr(ng-repeat="item in inventory")
               td {{item.inventoryName}}
               td {{item.inventoryRate}}
+              td {{item.inventoryAmount}}
 
     //- footer, all the modals are hidden here
     div(class="row", id="footer")   
