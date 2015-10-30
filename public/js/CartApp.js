@@ -160,8 +160,12 @@ app.controller('MainCtrl', function($scope, $http){
 	};
 
 	//-------------------------------Inventory Ajax--------------------------------------
-	$scope.addInventory = function(invName, invRate){
-		var JSONdata = {inventoryName: invName, inventoryRate: invRate};
+	$scope.addInventory = function(invName, invRate, invAmount){
+		var JSONdata = {
+			inventoryName: invName, 
+			inventoryRate: invRate,
+			inventoryAmount: parseInt(invAmount)
+		};
 		$http.put('/addInventory', JSONdata)
 			.success(function(){
 				console.log("add inventory successful");
