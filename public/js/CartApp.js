@@ -1,5 +1,5 @@
 var app = angular.module('cartApp', []);
-
+//testing testing kq
 app.controller('MainCtrl', function($scope, $http){
 	console.log("into the MainCtrl");
 	$scope.allRecords = [];
