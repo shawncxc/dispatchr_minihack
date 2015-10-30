@@ -56,7 +56,7 @@ module.exports.addNewOrder = function(req, res){
 							}else{
 
 								console.log('succes dedcut from the inventory');
-					})	
+					});	
 							}
 
 				db.close();
