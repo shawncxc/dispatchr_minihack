@@ -61,7 +61,30 @@ app.post('/addNewUser', function(req,res){
 
 
 } );//
+//Validate User and Password
+app.post('/validateUser', function(req,res){
+	client.connect(url, function(err, db){
+		db.collection('users').findOne(req.body, function(err, res){
+			//assert.equal(err, null);
+			//assert.equal(1, res.insertedCount);
+			db.close();
+			if (res){
 
+					res.send("success");
+
+			}else{
+
+					res.send("fail");
+			}
+
+			
+		});
+		res.sendStatus(200);
+	});
+
+
+
+} );
 //inventory routes
 app.put('/addInventory', function(req, res){
 	client.connect(url, function(err, db){
