@@ -60,13 +60,8 @@ module.exports.addNewOrder = function(req, res){
 							}else{
 
 								console.log('succes dedcut from the inventory');
-<<<<<<< HEAD
-					});	
-							}
-=======
 					}});	
-							
->>>>>>> 9fdad87fbec592104b619fe7c4ee720511b3ff61
+
 
 				
 		});
