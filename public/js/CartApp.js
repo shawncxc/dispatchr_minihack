@@ -115,6 +115,15 @@ app.controller('MainCtrl', function($scope, $http){
 		order.Rate = parseInt($scope.ExOrderName.inventoryRate);
 		order.Key = $scope.currentCustomer + $scope.ExOrderName + $scope.ExAmount + $scope.ExRate;
 
+		/*var item = {};
+
+		order._id = $scope.ExOrderName._id;
+		order.Amount = $scope.ExAmount;
+		item = push[]
+		order.Rate = parseInt($scope.ExOrderName.inventoryRate);
+		//order.createdBy = $scope.;
+		order.createAt = new Date();
+*/
 		var ExCustomerData = {};
 		ExCustomerData.CustomerUsername = $scope.currentCustomer;
 		ExCustomerData.NewOrder = order;
