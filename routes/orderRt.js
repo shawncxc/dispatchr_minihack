@@ -52,8 +52,10 @@ module.exports.addNewOrder = function(req, res){
 					db.collection('inventory').update({ inventoryName: req.body.NewOrder.OrderName},
 												{$inc: {inventoryAmount: -1*req.body.NewOrder.Amount}},
 												function(err,res){
+							db.close();
 							if (err){
 								console.log(err);
+
 
 							}else{
 
@@ -61,7 +63,7 @@ module.exports.addNewOrder = function(req, res){
 					}});	
 							
 
-				db.close();
+				
 		});
 		res.sendStatus(200);
 	});
