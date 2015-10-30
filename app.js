@@ -47,6 +47,21 @@ app.post('/addNewOrder', orderRt.checkExCustomer, orderRt.addNewOrder); //add ne
 app.post('/deleteExOrder', orderRt.deleteExOrder); //delete existing order
 app.post('/updateExOrder', orderRt.updateExOrder); //update existing order
 
+//Add New User
+app.post('/addNewUser', function(req,res){
+	client.connect(url, function(err, db){
+		db.collection('users').insertOne(req.body, function(err, res){
+			assert.equal(err, null);
+			assert.equal(1, res.insertedCount);
+			db.close();
+		});
+		res.sendStatus(200);
+	});
+
+
+
+} );//
+
 //inventory routes
 app.put('/addInventory', function(req, res){
 	client.connect(url, function(err, db){
