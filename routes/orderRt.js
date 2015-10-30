@@ -49,15 +49,17 @@ module.exports.addNewOrder = function(req, res){
 			function(err, res){
 				assert.equal(null, err);	
 				//Deduct the amount of the item in inventory collection
-					db.collection('inventory').update({ inventoryName: req.body.NewOrder.OrderName},{$inc: {inventoryAmount: -1*req.body.NewOrder.Amount},function(err,res){
+					db.collection('inventory').update({ inventoryName: req.body.NewOrder.OrderName},
+												{$inc: {inventoryAmount: -1*req.body.NewOrder.Amount}},
+												function(err,res){
 							if (err){
 								console.log(err);
 
 							}else{
 
 								console.log('succes dedcut from the inventory');
-					})	
-							}
+					}});	
+							
 
 				db.close();
 		});
