@@ -131,7 +131,10 @@ app.controller('MainCtrl', function($scope, $http){
 		$http.post('/AddNewOrder', ExCustomerData)
 			.success(function(data){
 				if(data == "FAIL") alert("Please enter an existing customer");
-				else showAll();
+				else{
+					showAllInv();
+					showAll();
+				} 
 			});
 	};
 
