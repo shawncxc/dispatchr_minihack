@@ -192,6 +192,21 @@ app.controller('MainCtrl', function($scope, $http){
 			});
 	}
 
+	//----------------------------Add Sales Rep---------------------
+	$scope.addNewUser = function(){
+		var salesRep = {};
+		salesRep.username = $scope.SalesRepUsername;
+		salesRep.password = $scope.SalesRepPwd;
+
+		//console.log(salesRep);
+
+		$http.post('addNewUser', salesRep)
+			.success(function(){
+				console.log("sales rep added");
+			});
+	};
+
+
 });
 
 

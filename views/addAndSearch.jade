@@ -15,3 +15,39 @@ div(class="col-xs-3 col-sm-3 col-md-3 col-lg-3")
     button(class="btn btn-success btn-lg btn-block", data-toggle="modal", data-target="#newCustForm") 
       | Add New Customer
   br
+
+  div(class="row")
+    button(class="btn btn-success btn-lg btn-block", data-toggle="modal", data-target="#newUserForm") 
+      | Add New Sales Rep
+  br
+
+//- Modal for Adding New Customer and Order
+div(id="newUserForm", class="modal fade", role="dialog")
+  div(class="modal-dialog")
+    div(class="modal-content")
+      div(class="modal-header")
+        button(type="button", class="close", data-dismiss="modal") &times;
+        h4(class="modal-title") 
+          | New Sales Rep
+      div(class="modal-body")
+        form#newUserForm(action="/addNewUser", method="POST", name="newUserForm" novalidate)
+          
+          div(class="input-group input-group")
+            span(class="input-group-addon", id="sizing-addon1") 
+              span(class="glyphicon glyphicon-user")
+            input#SalesRepUsername(ng-model="SalesRepUsername", type="text", name="SalesRepUsername", class="form-control", placeholder="Sales Rep Username", aria-describedby="sizing-addon1" required)
+          span(style="color:red" ng-show="newUserForm.SalesRepUsername.$dirty && newUserForm.SalesRepUsername.$invalid")
+            span(ng-show="newUserForm.SalesRepUsername.$error.required") Username is required.
+
+          div(class="input-group input-group")
+            span(class="input-group-addon", id="sizing-addon1") 
+              span(class="glyphicon glyphicon-qrcode")
+            input#SalesRepPwd(ng-model="SalesRepPwd", type="password", name="SalesRepPwd", class="form-control", placeholder="Customer Password", aria-describedby="sizing-addon1" required)
+          span(style="color:red" ng-show="newUserForm.SalesRepPwd.$dirty && newUserForm.SalesRepPwd.$invalid")
+            span(ng-show="newUserForm.SalesRepPwd.$error.required") Password is required.
+
+      div(class="modal-footer")
+        button(class="btn btn-success", data-dismiss="modal", ng-click="addNewUser()", ng-disabled="newUserForm.$invalid") 
+          | Submit
+        button(class="btn btn-default", data-dismiss="modal") 
+          | Close
