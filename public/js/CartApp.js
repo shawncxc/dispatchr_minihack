@@ -226,12 +226,14 @@ app.controller('MainCtrl', function($scope, $http, $cookieStore){
 			});
 	};
 
-	//------------------is logined or not -----------------
+	//------------------ login cookie -----------------
 	$scope.isLogged = function(){
 		if($cookieStore.get('USERNAME') != "" && $cookieStore.get('USERNAME') != undefined){
 			return "nonmodal";
 		}
-		else return "modal";
+		else{
+			return "modal";
+		} 
 	};
 
 	$scope.signout = function(){
