@@ -5,7 +5,7 @@ div#loginModal(class="modal")
       div(class="modal-header")
         h2(class="modal-title") Login As ...
       div(class="modal-body")
-        button(class="btn btn-success btn-lg btn-block", data-dismiss="modal") Login as Sales Representative
+        button(class="btn btn-success btn-lg btn-block", data-dismiss="modal", data-toggle="modal", data-target="#sploginForm") Login as Sales Representative
         br
         button(class="btn btn-warning btn-lg btn-block", data-dismiss="modal", ng-click="changeAuth()") Login as Inventory Administration
         br
@@ -13,3 +13,35 @@ div#loginModal(class="modal")
         p* login as inventory administration will have authorization to edit and change
         p* login without choosing either of them will be sales representative defaultly
       div(class="modal-footer")
+
+
+//- modal for sales rep login
+div(id="sploginForm", class="modal fade", role="dialog")
+  div(class="modal-dialog")
+    div(class="modal-content")
+      div(class="modal-header")
+        //- button(type="button", class="close", data-dismiss="modal") &times;
+        h4(class="modal-title") 
+          | Sales Rep Login
+      div(class="modal-body")
+        form#sploginForm(action="/validateUser", method="POST", name="sploginForm" novalidate)
+          
+          div(class="input-group input-group")
+            span(class="input-group-addon", id="sizing-addon1") 
+              span(class="glyphicon glyphicon-user")
+            input#sploginUsername(ng-model="sploginUsername", type="text", name="sploginUsername", class="form-control", placeholder="Sales Rep Username", aria-describedby="sizing-addon1" required)
+          span(style="color:red" ng-show="sploginForm.sploginUsername.$dirty && sploginForm.sploginUsername.$invalid")
+            span(ng-show="sploginForm.sploginUsername.$error.required") Username is required.
+
+          div(class="input-group input-group")
+            span(class="input-group-addon", id="sizing-addon1") 
+              span(class="glyphicon glyphicon-qrcode")
+            input#sploginPwd(ng-model="sploginPwd", type="password", name="sploginPwd", class="form-control", placeholder="Customer Password", aria-describedby="sizing-addon1" required)
+          span(style="color:red" ng-show="sploginForm.sploginPwd.$dirty && sploginForm.sploginPwd.$invalid")
+            span(ng-show="sploginForm.sploginPwd.$error.required") Password is required.
+
+      div(class="modal-footer")
+        button(class="btn btn-success", data-dismiss="modal", ng-click="validateUser()", ng-disabled="sploginForm.$invalid") 
+          | Submit
+        //- button(class="btn btn-default", data-dismiss="modal") 
+        //-   | Closes

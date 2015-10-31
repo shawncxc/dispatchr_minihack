@@ -206,7 +206,20 @@ app.controller('MainCtrl', function($scope, $http){
 			});
 	};
 
+	//-----------------------Validate User sales rep---------------
+	$scope.validateUser = function(){
+		var JsonData = {};
+		JsonData.username = $scope.sploginUsername;
+		JsonData.password = $scope.sploginPwd;
 
+		$http.post('/validateUser', JsonData)
+			.success(function(res){
+				if(res == "fail"){
+					alert("Wrong password or Wrong username");
+					location.reload();
+				}
+			});
+	};
 });
 
 

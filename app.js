@@ -64,11 +64,11 @@ app.post('/addNewUser', function(req,res){
 //Validate User and Password
 app.post('/validateUser', function(req,res){
 	client.connect(url, function(err, db){
-		db.collection('users').findOne(req.body, function(err, res){
+		db.collection('users').findOne(req.body, function(err, data){
 			//assert.equal(err, null);
 			//assert.equal(1, res.insertedCount);
 			db.close();
-			if (res){
+			if (data){
 
 					res.send("success");
 
@@ -79,7 +79,7 @@ app.post('/validateUser', function(req,res){
 
 			
 		});
-		res.sendStatus(200);
+		//res.sendStatus(200);
 	});
 
 
