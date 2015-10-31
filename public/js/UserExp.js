@@ -4,7 +4,10 @@ $.noConflict();
 
 jQuery(function(){
 	//show login modal
-	$('#loginModal').modal('show');
+	if($('#loginModal').hasClass("modal"))
+		$('#loginModal').modal('show');
+	else
+		$('#loginModal').hide();
 
 	//clear all the input when modal is closed
 	$('.modal').on('hidden.bs.modal', function(){

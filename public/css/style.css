@@ -37,3 +37,8 @@ nav div button{
 #addInvenBtn{
 	margin-left: 0px;
 }
+
+#signOutBtn{
+	margin-top: 20px;
+	margin-right: 30px;
+}

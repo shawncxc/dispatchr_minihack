@@ -1,7 +1,8 @@
-var app = angular.module('cartApp', []);
+var app = angular.module('cartApp', ['ngCookies']);
 //testing testing kq
-app.controller('MainCtrl', function($scope, $http){
+app.controller('MainCtrl', function($scope, $http, $cookieStore){
 	console.log("into the MainCtrl");
+
 	$scope.allRecords = [];
 	$scope.editTrue = "";
 	$scope.auth = false;
@@ -218,8 +219,26 @@ app.controller('MainCtrl', function($scope, $http){
 					alert("Wrong password or Wrong username");
 					location.reload();
 				}
+				else{
+					$cookieStore.put("USERNAME", $scope.sploginUsername);
+					console.log($cookieStore.get("USERNAME"));
+				}
 			});
 	};
+
+	//------------------is logined or not -----------------
+	$scope.isLogged = function(){
+		if($cookieStore.get('USERNAME') != "" && $cookieStore.get('USERNAME') != undefined){
+			return "nonmodal";
+		}
+		else return "modal";
+	};
+
+	$scope.signout = function(){
+		$cookieStore.remove("USERNAME");
+		location.reload();
+	};
+
 });
 
 
